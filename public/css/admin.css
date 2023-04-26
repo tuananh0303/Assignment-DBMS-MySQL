@@ -70,7 +70,6 @@ section {
   font-size: 2rem;
 }
 
-
 /* 
 .message {
   position: sticky;
@@ -629,11 +628,11 @@ a:hover {
   top: 0;
   left: 0;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 10px;
   z-index: -1;
 }
 .users .box-container .box .detail p {
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
   font-size: 2rem;
   color: var(--light-color);
 }
@@ -890,8 +889,8 @@ a:hover {
 .table .scroll {
   height: 15rem;
   text-overflow: ellipsis;
-    overflow-x: hidden;
-    padding: 0 5px;
+  overflow-x: hidden;
+  padding: 0 5px;
 }
 .table .scroll::-webkit-scrollbar {
   width: 8px;
@@ -1148,8 +1147,7 @@ a:hover {
   font-size: 1.5rem;
 }
 
-
-.edit-product-form .btn  {
+.edit-product-form .btn {
   line-height: 1rem;
 }
 
@@ -1291,7 +1289,7 @@ a:hover {
     font-size: 1.5rem;
   }
 
-  .description-book-combo p{
+  .description-book-combo p {
     height: 15rem;
     overflow-x: hidden;
     text-overflow: ellipsis;
@@ -1302,12 +1300,12 @@ a:hover {
     width: 70%;
   }
 }
-  
+
 @media (max-width: 450px) {
   html {
     font-size: 50%;
   }
-  
+
   .title1,
   .title {
     text-align: center;
