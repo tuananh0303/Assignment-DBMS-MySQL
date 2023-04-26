@@ -53,6 +53,7 @@ session_start();
         <div class="box-container">
             <?php
       $grand_total = 0;
+      $get_total = 0;
       $per_page = 8;
       $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
       $start = ($page - 1) * $per_page;
@@ -61,7 +62,7 @@ session_start();
         while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
       ?>
             <?php
-          $total_products = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `cart`") or die('query failed');
+          $total_products = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `cart` WHERE user_id = '$user_id' ") or die('query failed');
           $total_products = mysqli_fetch_assoc($total_products)['total'];
           $total_pages = ceil($total_products / $per_page);
           $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -69,7 +70,7 @@ session_start();
           // Tính toán giới hạn của LIMIT trong câu truy vấn SQL
           $offset = ($current_page - 1) * $per_page;
           // Truy vấn sản phẩm trong cơ sở dữ liệu với LIMIT và OFFSET
-          $select_cart = mysqli_query($conn, "SELECT * FROM cart LIMIT $per_page OFFSET $offset") or die('query failed');
+          $select_cart = mysqli_query($conn, "SELECT * FROM `cart` WHERE user_id = '$user_id' LIMIT $per_page OFFSET $offset ") or die('query failed');
           if (mysqli_num_rows($select_cart) > 0) {
             while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
           ?>
@@ -99,11 +100,13 @@ session_start();
                     <span><?php echo $sub_total = ($fetch_cart['quantity'] * $fetch_cart['price']); ?></span><span>₫</span>
                 </div>
             </div>
+
             <?php
-              $grand_total += $sub_total;
+              $get_total += $sub_total;
             }
           }
         }
+        $grand_total += $get_total;
       } else {
         echo '<p class="empty">Giỏ hàng của bạn hiện đang trống</p>';
       }
@@ -203,7 +206,7 @@ session_start();
             const action = event.target.dataset.action; // get action (increase hoặc descrease)
             const input = document.querySelector(`.cart-quantity-input[data-id="${id}"]`);
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
-                'content'); // lấy CSRF token
+            'content'); // lấy CSRF token
 
             // Gửi yêu cầu AJAX đến server
             fetch('../Controllers/cartController.php', {
