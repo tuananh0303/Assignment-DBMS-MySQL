@@ -877,7 +877,7 @@ a:hover {
 .slogan {
   min-height: 13vh;
   font-size: 1.5rem;
-  text-align: justify;
+  text-align: center;
   margin: 0.5rem;
   /* background-color: #666; */
 }

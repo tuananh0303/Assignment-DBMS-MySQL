@@ -35,6 +35,7 @@ CREATE TABLE `authors` (
   `information` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 --
 -- Dumping data for table `authors`
 --
@@ -62,20 +63,8 @@ CREATE TABLE `cart` (
   `image` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cart`
---
 
-INSERT INTO `cart` (`id`, `user_id`, `product_name`, `price`, `quantity`, `image`) VALUES
-(0, 'jBSM7nyWJV', 'Không Phải Sói Nhưng Cũng Đừng Là Cừu', 96000, 1, 'https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg'),
-(0, 'jBSM7nyWJV', 'Nhà Giả Kim', 65500, 1, 'https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_36793.jpg'),
-(0, 'jBSM7nyWJV', 'Combo 3 cuốn sách Chứng Khoán dành cho người mới 2023', 515000, 1, 'https://vnibooks.com/wp-content/uploads/2021/09/combo-sa%CC%81ch-chu%CC%9B%CC%81ng-khoa%CC%81n-cho-ngu%CC%9Bo%CC%9B%CC%80i-mo%CC%9B%CC%81i-768x768.jpg.webp'),
-(49431, 'eo6zKcgzbU', 'Thao Túng Tâm Lý', 126750, 1, 'https://cdn0.fahasa.com/media/catalog/product/8/9/8936066692298-1.jpg'),
-(60292, 'eo6zKcgzbU', 'Nhà Giả Kim', 65500, 1, 'https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_36793.jpg');
 
--- --------------------------------------------------------
-
---
 -- Table structure for table `combo_products`
 --
 
@@ -118,30 +107,6 @@ INSERT INTO `combo_products` (`combo_id`, `combo_name`, `price`, `image_combo`, 
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `database_bai3`
---
-
-CREATE TABLE `database_bai3` (
-  `id` int(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(5000) NOT NULL,
-  `price` float NOT NULL,
-  `image` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `database_bai3`
---
-
-INSERT INTO `database_bai3` (`id`, `name`, `description`, `price`, `image`) VALUES
-(1, 'Kingston FURY Beast DDR5', 'Dung lượng 16GB lên đến 6000MT/s', 123, 'https://minhancomputercdn.com/media/product/7472_kingston_fury_beast_rgb_16gb_1.jpg'),
-(2, 'Kingston FURY Beast DDR4 RGB', 'Giúp nâng cao hiệu năng và cải tiến phong cách với tốc độ lên đến 3733MT/s', 13.25, 'https://media.kingston.com/kingston/product/ktc-product-beast-ddr4-rgb-dimm-1-angled-zm-lg.jpg'),
-(7, 'Thanh Cong Nguyen', 'Giúp nâng cao hiệu năng và cải tiến phong cách với tốc độ lên đến 3600MHz', 12, 'https://bizweb.dktcdn.net/100/329/122/products/ram-pc-kingston-fury-beast-rgb-32gb-3600mhz-ddr4-2x16gb-kf436c18bbak2-32-1-38a0d576-31f5-4e9b-b9b2-cd40bed9723a.png?v=1671726823967'),
-(12, 'Ram PC Kingston Fury Beast', 'Chuẩn RAM DDR4 Bus hỗ trợ 2400MHz Dung lượng 8 GB (1x8GB)', 12, 'https://bizweb.dktcdn.net/100/329/122/products/ram-pc-kingston-fury-beast-rgb-32gb-3600mhz-ddr4-2x16gb-kf436c18bbak2-32-1-38a0d576-31f5-4e9b-b9b2-cd40bed9723a.png?v=1671726823967'),
-(14, 'Ram desktop Kingston Fury Renegade', 'Giúp nâng cao hiệu năng và cải tiến phong cách với tốc độ lên đến 3600MHz', 123, 'https://bizweb.dktcdn.net/100/329/122/products/ram-pc-kingston-fury-beast-rgb-32gb-3600mhz-ddr4-2x16gb-kf436c18bbak2-32-1-38a0d576-31f5-4e9b-b9b2-cd40bed9723a.png?v=1671726823967');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `message`
@@ -177,16 +142,6 @@ CREATE TABLE `orders` (
   `payment_status` varchar(20) NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `method`, `address`, `total_products`, `total_price`, `placed_on`, `payment_status`) VALUES
-(0, 'jBSM7nyWJV', 'Thanh Cong Nguyen', '0847476547', 'thanhcongnguyen0602@gmail.com', 'credit card', 'Ho Chi Minh', ', Combo 3 cuốn sách Chứng Khoán dành cho người mới 2023 (1) ', 515000, '20-Apr-2023', 'pending'),
-(0, 'jBSM7nyWJV', 'Thanh Cong Nguyen', '1231243', 'thanhcongnguyen0602@gmail.com', 'cash on delivery', 'Ho Chi Minh', ', Không Phải Sói Nhưng Cũng Đừng Là Cừu (1) , Nhà Giả Kim (1) , Trí Tuệ Do Thái (1) ', 303250, '20-Apr-2023', 'pending'),
-(68447, 'eo6zKcgzbU', 'Le Van Ha', '0987654321', 'hale@gmt.com', 'credit card', 'Di An, Bình Dương', ', Bố già (10) , Không Phải Sói Nhưng Cũng Đừng Là Cừu (5) , Nhà Giả Kim (5) , Combo Sách Tâm Lý Kẻ Phạm Tội: 8 Vụ Án Hoàn Hảo + Tâm Lý Học Tội Phạm (1) , Combo Sách Rừng Na Uy + Điều Kỳ Diệu Của Tiệm Tạp Hóa Namiya (Bộ 2 Cuốn) (1) ', 3365500, '25-Apr-2023', 'pending');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `products`
@@ -203,6 +158,7 @@ CREATE TABLE `products` (
   `publiser` varchar(100) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Dumping data for table `products`
@@ -359,6 +315,8 @@ CREATE TABLE `users` (
   `image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
 --
 -- Dumping data for table `users`
 --
@@ -397,13 +355,7 @@ ALTER TABLE `cart`
 ALTER TABLE `combo_products`
   ADD PRIMARY KEY (`combo_id`);
 
---
--- Indexes for table `database_bai3`
---
-ALTER TABLE `database_bai3`
-  ADD PRIMARY KEY (`id`);
 
---
 -- Indexes for table `message`
 --
 ALTER TABLE `message`
@@ -441,13 +393,6 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `database_bai3`
---
-ALTER TABLE `database_bai3`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
@@ -456,13 +401,29 @@ ALTER TABLE `message`
 --
 -- AUTO_INCREMENT for table `reviews`
 --
+
 ALTER TABLE `reviews`
   MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+--- create index
+--
+
+CREATE INDEX idx_author_name ON authors(name);
+ALTER TABLE authors ADD FULLTEXT INDEX idx_author_slogan (slogan);
+-- SELECT * FROM products WHERE MATCH(product_name) AGAINST('từ_khóa_tìm_kiếm');
+CREATE INDEX idx_combo_name ON combo_products(combo_name);
+ALTER TABLE combo_products ADD FULLTEXT INDEX idx_combo_slogan (description);
+CREATE INDEX idx_product_name ON products(name);
+ALTER TABLE products ADD FULLTEXT INDEX idx_products_slogan (description);
+CREATE INDEX idx_user_fullname ON users(fullname);
+CREATE INDEX idx_user_username ON users(username);
 
 --
 -- Constraints for dumped tables
 --
 
+ALTER TABLE `cart` ADD COLUMN `version` INT NOT NULL DEFAULT 0 AFTER `image`;
 --
 -- Constraints for table `cart`
 --

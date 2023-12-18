@@ -59,8 +59,8 @@ class User
         $rename = create_unique_id() . '.' . $ext;
         $image_size = $_FILES['image']['size'];
         $image_tmp_name = $_FILES['image']['tmp_name'];
-        $image_folder = '../../public/images/'.$rename;
-        if(strlen($username) < 6) {
+        $image_folder = '../../public/images/' . $rename;
+        if (strlen($username) < 6) {
             return 'Tên người dùng phải có ít nhất 6 ký tự';
         }
         if (strlen($phonenumber) != 10) {
@@ -75,8 +75,8 @@ class User
         if (!preg_match("/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $email)) {
             return 'Email không hợp lệ';
         }
-        if(!empty($image)){
-            if($image_size > 2000000){
+        if (!empty($image)) {
+            if ($image_size > 2000000) {
                 return 'Kích thước ảnh quá lớn!';
             } else {
                 move_uploaded_file($image_tmp_name, $image_folder);
@@ -173,13 +173,16 @@ class User
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $phonenumber = $_POST['phonenumber'];
         $phonenumber = filter_var($phonenumber, FILTER_SANITIZE_NUMBER_INT);
+        // đặt transaction ở đây là hợp lý
+        mysqli_autocommit($this->conn, false);
+        $success = true;
         if (!empty($fullname)) {
             mysqli_query($this->conn, "UPDATE `users` SET fullname = '$fullname' WHERE user_id = '$user_id'");
         }
         if (!empty($username)) {
             $verify_username = mysqli_query($this->conn, "SELECT * FROM `users` WHERE username = '$username'");
             if (mysqli_num_rows($verify_username) > 0) {
-                return 'Username đã tồn tại!';
+                $success = false;
             } else {
                 mysqli_query($this->conn, "UPDATE `users` SET username = '$username' WHERE user_id = '$user_id'");
             }
@@ -187,7 +190,7 @@ class User
         if (!empty($email)) {
             $verify_email = mysqli_query($this->conn, "SELECT * FROM `users` WHERE email = '$email'");
             if (mysqli_num_rows($verify_email) > 0) {
-                return 'Email đã tồn tại!';
+                $success = false;
             } else {
                 mysqli_query($this->conn,  "UPDATE `users` SET email = '$email' WHERE user_id = '$user_id'");
             }
@@ -204,7 +207,7 @@ class User
         $image_folder = '../../public/images/' . $rename;
         if (!empty($image)) {
             if ($image_size > 2000000) {
-                return 'Kích thước hình ảnh quá lớn!';
+                $success = false;
             } else {
                 mysqli_query($this->conn,  "UPDATE `users` SET image = '$rename' WHERE user_id = '$user_id'");
                 move_uploaded_file($image_tmp_name, $image_folder);
@@ -226,18 +229,24 @@ class User
                     if ($empty_new != 1) {
                         mysqli_query($this->conn, "UPDATE `users` SET password = '$newpass' WHERE user_id = '$user_id'");
                     } else {
-                        return 'Vui lòng nhập mật khẩu mới!';
+                        $success = false;
                     }
                 } else {
-                    return 'Xác nhận mật khẩu không khớp!';
+                    $success = false;
                 }
             } else {
                 if ($_POST['oldpass'] == '') {
                     return 'Successfull Updated';
-                } else  return 'Không đúng mật khẩu cũ!';
+                } else  $success = false;
             }
         }
-        return 'Cập nhật thông tin thành công!';
+        if ($success) {
+            mysqli_commit($this->conn);
+            return 'Cập nhật thông tin thành công!';
+        } else {
+            mysqli_rollback($this->conn);
+            return 'Có lỗi xảy ra, vui lòng thử lại sau!';
+        }
     }
 
     public function userSendMessage($name, $email, $username, $phonenumber, $message)

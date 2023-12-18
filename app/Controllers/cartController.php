@@ -59,7 +59,8 @@ if (isset($_POST['add_to_cart'])) {
 if (isset($_POST['update_cart'])) {
    $cart_id = $_POST['cart_id'];
    $cart_quantity = $_POST['cart_quantity'];
-   $message = $cartModel->updateCart($cart_id, $cart_quantity);
+   $current_version = $_POST['cart_version'];
+   $message = $cartModel->updateCart($cart_id, $cart_quantity, $current_version);
    $_SESSION['success_msg'] = $message;
    header('Location: ../View/shopping_cart.php#shopping-cart');
    exit;

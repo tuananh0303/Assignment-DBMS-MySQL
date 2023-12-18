@@ -11,8 +11,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Thông tin sách đã order </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -35,27 +34,27 @@ session_start();
     <!-- List product section starts  -->
     <section class="listcart" id="listcart" data-aos="zoom-in-up" data-aos-delay="600">
         <h1>Danh sách sản phẩm</h1>
+        <?php
+        $grand_total = 0;
+        $per_page = 9;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $start = ($page - 1) * $per_page;
+        $select_cart = mysqli_query($conn, "SELECT product_name,price,quantity FROM `cart` ") or die('query failed');
+        if (mysqli_num_rows($select_cart) > 0) {
+            while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
+        ?>
                 <?php
-                $grand_total = 0;
-                $per_page = 9;
-                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $start = ($page - 1) * $per_page;
-                $select_cart = mysqli_query($conn, "SELECT * FROM `cart` ") or die('query failed');
+                $total_products = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `cart`") or die('query failed');
+                $total_products = mysqli_fetch_assoc($total_products)['total'];
+                $total_pages = ceil($total_products / $per_page);
+                $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $url = "http://localhost:3000/admin/View/admin_cart.php?page=";
+                // Tính toán giới hạn của LIMIT trong câu truy vấn SQL
+                $offset = ($current_page - 1) * $per_page;
+                // Truy vấn sản phẩm trong cơ sở dữ liệu với LIMIT và OFFSET
+                $select_cart = mysqli_query($conn, "SELECT product_name,price,quantity FROM cart LIMIT $per_page OFFSET $offset") or die('query failed');
                 if (mysqli_num_rows($select_cart) > 0) {
-                    while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
-                ?>
-                  <?php
-                    $total_products = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `cart`") or die('query failed');
-                    $total_products = mysqli_fetch_assoc($total_products)['total'];
-                    $total_pages = ceil($total_products / $per_page);
-                    $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
-                    $url = "http://localhost:3000/admin/View/admin_cart.php?page=";
-                    // Tính toán giới hạn của LIMIT trong câu truy vấn SQL
-                    $offset = ($current_page - 1) * $per_page;
-                    // Truy vấn sản phẩm trong cơ sở dữ liệu với LIMIT và OFFSET
-                    $select_cart = mysqli_query($conn, "SELECT * FROM cart LIMIT $per_page OFFSET $offset") or die('query failed');
-                if (mysqli_num_rows($select_cart) > 0) {
-                    echo'<table>
+                    echo '<table>
                     <thead>
                         <tr>
                             <th style="padding-left:2rem;">Tên sản phẩm</th>
@@ -74,22 +73,22 @@ session_start();
                         <td>$fetch_cart[quantity]</td>
                     </tr>
                 ";
-                        ?>
-                    <?php 
+                ?>
+        <?php
                     }
                 }
             }
-                }else {
-                    echo '<p class="empty">Hiện tại không có yêu cầu nào!</p>';
-                }
-                ?>
-            </tbody>
+        } else {
+            echo '<p class="empty">Hiện tại không có yêu cầu nào!</p>';
+        }
+        ?>
+        </tbody>
         </table>
         <div class="grand-total" style="color:#000"> Tổng số tiền cần thanh toán : <span>
                 <?php echo $grand_total; ?>₫
             </span> </div>
 
-            <nav aria-label="Page navigation example" class="toolbar">
+        <nav aria-label="Page navigation example" class="toolbar">
             <ul class="pagination justify-content-center d-flex flex-wrap">
                 <li class="page-item <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>">
                     <a class="page-link" href="<?php echo $url . ($current_page - 1); ?>" tabindex="-1">Previous</a>

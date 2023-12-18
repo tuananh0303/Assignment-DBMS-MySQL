@@ -169,17 +169,20 @@ if (!isset($admin_id)) {
         <div>
             <div class="blackboard">
                 <div class="form">
-                    <p>
+                    <!-- <p>
                         <label for="searchby">Tìm Kiếm Theo: &emsp;</label>
                         <select name="searchby">
                             <option value="products.name">Tên</option>
-                            <option value="products.author">Tác giả</option>
                         </select>
-                    </p>
-                    <br>
+                    </p> -->
+                    <!-- <br> -->
                     <p>
-                        <label for="name">Tìm Kiếm:&emsp;&emsp;&ensp;</label>
+                        <label for="name">Tên sản phẩm:&emsp;&emsp;&ensp;</label>
                         <input type="text" name="name" placeholder="Nhập nội dung tìm kiếm" />
+                    </p><br>
+                    <p>
+                        <label for="authorname">Tên tác giả:&emsp;&emsp;&ensp;</label>
+                        <input type="text" name="authorname" placeholder="Nhập nội dung tìm kiếm" />
                     </p><br>
                     <p>
                         <label for="pricebelow">Khoảng giá:</label>&emsp;
@@ -210,8 +213,11 @@ if (!isset($admin_id)) {
 
             if (isset($_POST['search'])) {
                 $_POST['name'] = addslashes($_POST['name']);
-                if (!empty($_POST['name']) && $_POST['pricebelow'] && $_POST['priceabove']) {
-                    $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE {$_POST['searchby']} LIKE '%{$_POST['name']}%' AND products.price BETWEEN {$_POST['pricebelow']} and {$_POST['priceabove']}") or die('query failed');
+                $_POST['authorname'] = addslashes($_POST['authorname']);
+                if (!empty($_POST['name']) && !empty($_POST['authorname']) && $_POST['pricebelow'] && $_POST['priceabove']) {
+                    $sql_products = mysqli_query($conn, "SELECT products.*  FROM `products` INNER JOIN authors ON products.author = authors.name WHERE products.name LIKE '%{$_POST['name']}%' AND authors.name LIKE '%{$_POST['authorname']}%' AND products.price BETWEEN {$_POST['pricebelow']} and {$_POST['priceabove']}") or die('query failed');
+                } elseif (!empty($_POST['name']) && $_POST['pricebelow'] && $_POST['priceabove']) {
+                    $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE products.name LIKE '%{$_POST['name']}%' AND products.price BETWEEN {$_POST['pricebelow']} and {$_POST['priceabove']}") or die('query failed');
                 } elseif ($_POST['pricebelow'] && $_POST['priceabove']) {
                     $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE products.price BETWEEN {$_POST['pricebelow']} and {$_POST['priceabove']}") or die('query failed');
                 } elseif ($_POST['pricebelow']) {
@@ -219,8 +225,9 @@ if (!isset($admin_id)) {
                 } elseif ($_POST['priceabove']) {
                     $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE products.price < {$_POST['priceabove']}") or die('query failed');
                 } elseif (!empty($_POST['name'])) {
-                    $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE {$_POST['searchby']} LIKE '%{$_POST['name']}%'") or die('query failed');
+                    $sql_products = mysqli_query($conn, "SELECT products.* FROM `products` WHERE products.name LIKE '%{$_POST['name']}%'") or die('query failed');
                 }
+
                 if ($sql_products && $sql_products->num_rows > 0) {
                     while ($fetch_products_sql = mysqli_fetch_assoc($sql_products)) {
             ?>
